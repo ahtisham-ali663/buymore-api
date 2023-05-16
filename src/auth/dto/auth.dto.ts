@@ -6,7 +6,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-enum UserRole {
+export enum RoleEnum {
   ADMIN = 'admin',
   USER = 'user',
   MODERATOR = 'moderator',
@@ -26,8 +26,8 @@ export class AuthSignUpDto {
   @MinLength(8)
   password: string;
 
-  @IsEnum(UserRole)
-  role: UserRole;
+  @IsEnum(RoleEnum)
+  role: RoleEnum;
 }
 
 export class AuthSignInDto {

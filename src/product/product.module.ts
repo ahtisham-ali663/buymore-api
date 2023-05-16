@@ -4,7 +4,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 @Module({
   imports: [TypeOrmModule.forFeature([Product]), JwtModule.register({})],
   controllers: [ProductController],

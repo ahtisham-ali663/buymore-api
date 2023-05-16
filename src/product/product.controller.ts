@@ -11,18 +11,22 @@ import {
   Patch,
   Param,
 } from '@nestjs/common';
-
+import { Roles } from 'src/auth/guard/roles.decorator';
+import { RoleEnum } from './../auth/dto/auth.dto';
+import { RolesGuard } from 'src/auth/guard/roles.guard';
 @Controller('product')
 export class ProductController {
   constructor(private productService: ProductService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN)
   @Post('add-product')
   addProduct(@Body() payload: ProductDto) {
     return this.productService.addProduct(payload);
   }
 
-  @UseGuards(AuthGuard)
+  // @Roles(RoleEnum.USER, RoleEnum.MODERATOR)
+  // @UseGuards(AuthGuard)
   @Get('all-product')
   getAllProducts() {
     return this.productService.getAllProducts();
@@ -40,7 +44,7 @@ export class ProductController {
     return this.productService.updateProduct(id, updateProduct);
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get('category-product/:category')
   getAllProductByCategory(@Param('category') category: string) {
     return this.productService.getAllProductByCategory(category);

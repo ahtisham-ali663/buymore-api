@@ -28,7 +28,7 @@ export class AuthService {
       throw new ForbiddenException('Credenials Incorrect');
     }
     delete user.password;
-    return this.signToken(user.id, user.email);
+    return this.signToken(user.id, user.email, user.role);
   }
   async signUp(signUpDto: AuthSignUpDto) {
     const hashedPassword = await argon.hash(signUpDto.password);
@@ -51,14 +51,16 @@ export class AuthService {
   async signToken(
     userId: number,
     email: string,
+    role: string,
   ): Promise<{ access_tokken: string }> {
     const payload = {
       sub: userId,
       email,
+      role,
     };
     const secret = this.config.get('JWT_SECRET');
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: '1h',
+      expiresIn: '10h',
       secret: secret,
     });
     return {
